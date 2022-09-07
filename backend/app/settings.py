@@ -25,7 +25,9 @@ SECRET_KEY = 'django-insecure--9c02vf+$%c2it!ehzr)gm*t(1bv5t5s4=enpm8%7_x3s74f(m
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'api'
+]
 
 
 # Application definition
@@ -125,7 +127,9 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/static/'
+
+STATIC_ROOT = '/vol/web/static'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -138,7 +142,14 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema'
 }
 
-# CORS_ALLOWED_ORIGINS = [
-#     "http://127.0.0.1:3000",
-#     "http://localhost:3000"
-# ]
+SPECTACULAR_SETTINGS = {
+    'COMPONENT_SPLIT_REQUEST': True
+}
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3050"
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:3050',
+]
