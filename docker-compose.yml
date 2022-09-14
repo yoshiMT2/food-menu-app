@@ -23,7 +23,7 @@ services:
     build: ./proxy
     restart: always
     ports:
-      - '3050:80'
+      - '3000:80'
     volumes:
       - static-data:/vol/static
   db:
@@ -37,8 +37,10 @@ services:
       - "TZ=Asia/Tokyo"
   frontend:
     build: ./frontend
+    restart: always
     volumes:
-      - ./frontend:/app/vol
+      - /app/node_modules
+      - ./frontend:/app
 volumes:
   dev-db-data:
   static-data:

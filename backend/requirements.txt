@@ -5,3 +5,4 @@ drf-spectacular>=0.22.1,<0.23
 selenium>=4.4.3, <4.5
 webdriver-manager>=3.8.3,<3.9
 beautifulsoup4>=4.11.1, <4.12
+django-cors-headers>=3.13.0, <3.14
