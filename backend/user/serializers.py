@@ -4,6 +4,9 @@ Serializers for the user API View.
 from django.contrib.auth import get_user_model, authenticate
 from django.utils.translation import gettext as _
 from rest_framework import serializers
+from rest_framework.authtoken.models import Token
+from rest_framework.response import Response
+from rest_framework.authtoken.models import Token as DefaultTokenModel
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -53,3 +56,12 @@ class AuthTokenSerializer(serializers.Serializer):
 
         attrs['user'] = user
         return attrs
+
+
+class TokenSerializer(serializers.ModelSerializer):
+
+    user = UserSerializer()
+
+    class Meta:
+        model = DefaultTokenModel
+        fields = ('key', 'user',)

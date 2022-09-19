@@ -41,6 +41,18 @@ services:
     volumes:
       - /app/node_modules
       - ./frontend:/app
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - '8080:80'
+    volumes:
+      - pg-data:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: adminpass
+    depends_on:
+      - db
 volumes:
   dev-db-data:
   static-data:
+  pg-data:

@@ -1,9 +1,14 @@
 """
 Tests for the user API.
 """
+from re import S
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 from django.urls import reverse
+from django.core import mail
+from core.models import User
+from django.conf import settings
+from django.utils.crypto import get_random_string
 
 from rest_framework.test import APIClient
 from rest_framework import status
@@ -11,6 +16,8 @@ from rest_framework import status
 CREATE_USER_URL = reverse('user:create')
 TOKEN_URL = reverse('user:token')
 ME_URL = reverse('user:me')
+FORGOT_URL = reverse('user:forgot_password')
+RESET_URL = reverse('user:reset_password')
 
 
 def create_user(**params):
@@ -39,7 +46,8 @@ class PublicUserApiTests(TestCase):
         }
         res = self.client.post(TOKEN_URL, payload)
 
-        self.assertIn('token', res.data)
+        self.assertIn('key', res.data)
+        self.assertIn('user', res.data)
         self.assertEqual(res.status_code, status.HTTP_200_OK)
 
     def test_create_token_bad_credentials(self):
@@ -65,6 +73,43 @@ class PublicUserApiTests(TestCase):
         res = self.client.get(ME_URL)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_set_password_reset_secret(self):
+        """Test setting password reset secret to user."""
+        user = create_user(email='test@example.com', name='testpass123')
+        payload = {'email': 'test@example.com'}
+        res = self.client.post(FORGOT_URL, payload)
+        user.refresh_from_db()
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(user.reset_password_secret), 32)
+
+    def test_send_reset_passsword_email(self):
+        """Test sending email to user for resetting password."""
+        reset_secret = get_random_string(32)
+        user = create_user(email='test@example.com', name='testpass123')
+        payload = {'email': 'test@example.com'}
+        res = self.client.post(FORGOT_URL, payload)
+        mail.send_mail(
+            f'パスワード再設定通知（{settings.WEB_SITE_NAME}）',
+            f'{settings.WEB_SITE_NAME}用のパスワード再設定はこちらから {settings.RESET_PASSWORD_URL}{reset_secret}',
+            settings.SENDER_EMAIL,
+            [payload['email']],
+            fail_silently=False
+        )
+        self.assertEqual(len(mail.outbox), 2)
+        self.assertEqual(mail.outbox[0].subject, 'パスワード再設定通知（Flimapp）')
+
+    def test_reset_password(self):
+        """Test reset password successful."""
+        secret = get_random_string(32)
+        create_user(email='test@example.com', password='testpass123', reset_password_secret=secret)
+        payload = {'password': 'testpass456', 'reset_secret': secret}
+        user = User.objects.get(reset_password_secret=payload['reset_secret'])
+        res = self.client.post(RESET_URL, payload)
+        user.refresh_from_db()
+        self.assertEqual(res.status_code, status.HTTP_200_OK)
+        self.assertTrue(user.check_password('testpass456'))
+        self.assertIsNone(user.reset_password_secret)
 
 
 class PrivateApiTests(TestCase):

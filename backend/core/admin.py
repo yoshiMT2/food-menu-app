@@ -20,7 +20,7 @@ class UserAdmin(BaseUserAdmin):
                 'fields': (
                     'is_active',
                     'is_staff',
-                    'is_superuser'
+                    'is_superuser',
                 )
             }
         ),
@@ -37,7 +37,8 @@ class UserAdmin(BaseUserAdmin):
                 'name',
                 'is_active',
                 'is_staff',
-                'is_superuser'
+                'is_superuser',
+                'reset_password_secret'
             )
         }]
     ]

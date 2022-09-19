@@ -161,3 +161,14 @@ CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
     'http://localhost:8000'
 ]
+
+WEB_SITE_NAME='Flimapp'
+RESET_PASSWORD_URL='api/user/password/reset/'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = '587'
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = ''
+SENDER_EMAIL = 'yosshit47@gmail.com'
+EMAIL_HOST_PASSWORD = 'perfectme105286268'
+EMAIL_USE_TLS = 'perfectme105286268'

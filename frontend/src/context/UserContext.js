@@ -1,61 +1,40 @@
-import React, { createContext, useContext, useState, useMemo } from 'react';
-import jwt_decode from 'jwt-decode';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useEffect,
+} from "react";
+import { Redirect } from "react-router-dom";
+import { isAuthenticated } from "../utils/AuthService";
+import LoginPage from "../pages/LoginPage";
 
-const UserDetails = createContext();
+const UserContext = createContext();
 
-export function useUserDetails() {
-    const context = useContext(UserDetails);
-    if (!context) {
-        throw new Error('UserDetails must be provided');
-    }
-    return context
-}
+export const UserProvider = ({ children }) => {
+  const [user, setUser] = useState(undefined);
 
-export function UserDetailsProvider(props) {
-    const userDetailsFromStorage = localStorage.getItem('userDetails')
-        ? JSON.parse(localStorage.getItem('userDetails')) : null;
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      let currentUser = isAuthenticated();
+      if (currentUser === null) {
+        localStorage.setItem("user", "");
+        currentUser = "";
+      }
 
-    let accessTokenFromStrage = false;
-    let refreshTokenFromStorage = false;
-    let nameFromStorage = false;
+      setUser(currentUser);
+    };
 
-    if (userDetailsFromStorage) {
-        if (userDetailsFromStorage.accessToken) {
-            accessTokenFromStrage = userDetailsFromStorage.access;
-            const jwt_decoded = jwt_decode(accessTokenFromStrage);
-            nameFromStorage = jwt_decoded.name;
-        } else {
-            accessTokenFromStrage = false;
-            nameFromStorage = false;
-        }
-        refreshTokenFromStorage = userDetailsFromStorage.refresh
-            ? userDetailsFromStorage.refresh : false;
-    }
+    checkLoggedIn();
+  }, []);
 
-    const [userDetails, setUserDetails] = useState({
-        accessToken: accessTokenFromStrage,
-        refreshToken: refreshTokenFromStorage,
-        name: nameFromStorage
-    });
+  console.log("usercontext", user);
 
-    const value = useMemo(() => {
-        function updateUserDetail(accessToken, refreshToken) {
-            const newUserDetails = { ...userDetails};
+  return (
+    <UserContext.Provider value={[user, setUser]}>
+      {user?.key ? children : <LoginPage />}
+    </UserContext.Provider>
+  );
+};
 
-            newUserDetails.accessToken = accessToken;
-            newUserDetails.refreshToken = refreshToken;
-
-            if (newUserDetails.accessToken) {
-                const jwt_decoded = jwt_decode(newUserDetails.accessToken);
-                newUserDetails.name = jwt_decoded.name;
-            } else {
-                newUserDetails = false;
-            }
-
-            setUserDetails(newUserDetails);
-        }
-        return [{ ...userDetails}, updateUserDetail];
-    }, [userDetails])
-
-    return <UserDetails.Provider value={value} {...props} />;
-}
+export default UserContext;
