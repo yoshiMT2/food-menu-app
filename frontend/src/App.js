@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import React, { useState, useMemo } from "react";
+import React from "react";
 import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
@@ -8,8 +8,7 @@ import Navbar from "./components/Header";
 import {UserProvider} from "./context/UserContext";
 
 function App() {
-  const [user, setUser] = useState(null)
-  const value = useMemo(() => ({user, setUser}), [user, setUser])
+
   return (
     <Router>
       <UserProvider>
@@ -19,7 +18,7 @@ function App() {
             <Route path="/" element={<HomePage />} exact />
             <Route path="/login" element={<LoginPage />} exact />
             <Route
-              path="/reset_password"
+              path="/forgot"
               element={<ForgotPasswordPage />}
               exact
             />

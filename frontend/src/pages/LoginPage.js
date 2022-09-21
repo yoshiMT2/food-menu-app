@@ -1,18 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
 import {login} from "../utils/AuthService"
-import { getCookie } from "../utils/cookies";
-import UserContext from "../context/UserContext";
 
 function LoginPage() {
-  const { user, setUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [buttonEnabled, setButtonEnabled] = useState(false);
-  // const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
 
   useEffect(() => {
@@ -29,7 +25,7 @@ function LoginPage() {
       navigate('/')
       window.location.reload(false)
     } catch (error) {
-      console.error('error', error);
+      setErrorMessage(error)
     }
   };
 

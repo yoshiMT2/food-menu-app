@@ -13,15 +13,7 @@ export const login = async (email, password) => {
   });
   const token = res.data.key;
   if (token) {
-    localStorage.setItem("user", JSON.stringify(res.data));
+    localStorage.setItem("userDetails", JSON.stringify(res.data));
   }
   return res.data
-};
-
-export const isAuthenticated = () => {
-  const user = localStorage.getItem('user');
-  if (!user) {
-    return {}
-  }
-  return JSON.parse(user);
 };

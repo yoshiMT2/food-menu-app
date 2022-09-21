@@ -1,18 +1,41 @@
-import React, { useContext } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import UserContext from "../context/UserContext";
-import Button from "./Button";
+import { UseUserDetails } from "../context/UserContext";
 
 const Navbar = () => {
-  const [user, setUser] = useContext(UserContext);
-  const cuser = localStorage.getItem("user");
-  const username = JSON.parse(cuser)["user"]["name"];
+  const [userDetails, setUserDetails] = UseUserDetails();
   const navigate = useNavigate();
+  const [isLoggedOut, setIsLoggedOut ] = useState(false)
+
+  useEffect(() => {
+    if(isLoggedOut){
+      navigate('/login');
+      window.location.reload(false)
+    }
+    console.log('UseEffect!!')
+  }, [userDetails])
 
   const logoutHandler = () => {
-    localStorage.removeItem("user");
-    setUser({});
-    navigate("/login");
+    localStorage.removeItem("userDetails");
+    setUserDetails({});
+    setIsLoggedOut(true)
+  };
+
+
+  const logoutButton = () => {
+    if (userDetails?.key) {
+      return (
+        <button
+          type="button"
+          onClick={logoutHandler}
+          className="block px-2 text-white rounded-md hover:bg-indigo-600 disabled:text-transparent"
+        >
+          Logout
+        </button>
+      );
+    } else {
+        return null
+    }
   };
 
   return (
@@ -24,13 +47,7 @@ const Navbar = () => {
         >
           Flimapp
         </a>
-        <p>{username}</p>
-        <button
-						type='button'
-						onClick={logoutHandler}
-					>
-						Log out
-					</button>
+        {logoutButton()}
       </div>
     </nav>
   );

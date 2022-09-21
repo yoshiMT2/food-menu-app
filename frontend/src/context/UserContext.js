@@ -1,40 +1,32 @@
-import React, {
-  createContext,
-  useContext,
-  useState,
-  useMemo,
-  useEffect,
-} from "react";
-import { Redirect } from "react-router-dom";
-import { isAuthenticated } from "../utils/AuthService";
-import LoginPage from "../pages/LoginPage";
+import React, { createContext, useState, useMemo, useContext } from "react";
 
 const UserContext = createContext();
 
-export const UserProvider = ({ children }) => {
-  const [user, setUser] = useState(undefined);
+export function UseUserDetails () {
+  const context = useContext(UserContext)
+  return context
+}
+export function UserProvider({ children }) {
+  const userFromStrage = localStorage.getItem("userDetails")
+    ? JSON.parse(localStorage.getItem("userDetails"))
+    : undefined;
 
-  useEffect(() => {
-    const checkLoggedIn = async () => {
-      let currentUser = isAuthenticated();
-      if (currentUser === null) {
-        localStorage.setItem("user", "");
-        currentUser = "";
-      }
+  const [userDetails, setUserDetails] = useState({ ...userFromStrage });
 
-      setUser(currentUser);
-    };
+  const value = useMemo(() => {
+    function updateuserDetails() {
+      setUserDetails
+  (userFromStrage);
+    }
+    return [{ ...userDetails }, updateuserDetails];
+  }, [userDetails]);
 
-    checkLoggedIn();
-  }, []);
-
-  console.log("usercontext", user);
-
+  console.log("userDetailscontext", userDetails);
   return (
-    <UserContext.Provider value={[user, setUser]}>
-      {user?.key ? children : <LoginPage />}
+    <UserContext.Provider value={value}>
+      {children}
     </UserContext.Provider>
   );
-};
+}
 
 export default UserContext;
