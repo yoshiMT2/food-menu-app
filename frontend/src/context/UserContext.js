@@ -1,4 +1,6 @@
 import React, { createContext, useState, useMemo, useContext } from "react";
+import { isAuthenticated } from "../utils/AuthService";
+import LoginPage from "../pages/LoginPage";
 
 const UserContext = createContext();
 
@@ -15,13 +17,11 @@ export function UserProvider({ children }) {
 
   const value = useMemo(() => {
     function updateuserDetails() {
-      setUserDetails
-  (userFromStrage);
+      setUserDetails(userFromStrage);
     }
     return [{ ...userDetails }, updateuserDetails];
   }, [userDetails]);
-
-  console.log("userDetailscontext", userDetails);
+  console.log("userDetailscontext", userDetails.key);
   return (
     <UserContext.Provider value={value}>
       {children}

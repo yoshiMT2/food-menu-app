@@ -12,7 +12,6 @@ const Navbar = () => {
       navigate('/login');
       window.location.reload(false)
     }
-    console.log('UseEffect!!')
   }, [userDetails])
 
   const logoutHandler = () => {
@@ -39,7 +38,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="p-2 bg-indigo-700">
+    <nav className="p-2 bg-indigo-700 sticky top-0 z-50">
       <div className="container px-4 mx-5 flex flex-wrap items-center justify-between">
         <a
           className="text-sm font-bold leading-relaxed uppercase text-white"

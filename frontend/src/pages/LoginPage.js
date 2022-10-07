@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
-import {login} from "../utils/AuthService"
+import { login } from "../utils/AuthService";
 
 function LoginPage() {
   const navigate = useNavigate();
@@ -22,10 +22,10 @@ function LoginPage() {
   const loginUser = async () => {
     try {
       await login(email, password);
-      navigate('/')
-      window.location.reload(false)
+      navigate("/");
+      window.location.reload(false);
     } catch (error) {
-      setErrorMessage(error)
+      setErrorMessage(error);
     }
   };
 
@@ -49,6 +49,7 @@ function LoginPage() {
           emailかパスワードが間違っています
         </p>
         <InputField
+          className="lg:w-96 md:w-80 w-56"
           label="Email"
           type="email"
           value={email}

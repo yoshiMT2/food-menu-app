@@ -1,6 +1,8 @@
 """
 Database models.
 """
+from unittest.util import _MAX_LENGTH
+from xml.etree.ElementInclude import default_loader
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import (
@@ -39,7 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
-    reset_password_secret = models.CharField(max_length=100, blank=True)
+    reset_password_secret = models.CharField(max_length=100, blank=True, null=True)
 
     objects = UserManager()
 
@@ -54,10 +56,10 @@ class Product(models.Model):
     )
     name = models.CharField(max_length=255, blank=True)
     market = models.CharField(max_length=50, blank=True)
-    url = models.CharField(max_length=255)
+    url = models.URLField(max_length=255)
     has_stock = models.BooleanField(default=True)
     current_price = models.IntegerField(default=0)
-    initial_price = models.IntegerField(default=0)
+    image = models.CharField(max_length=255, blank=True)
     detail = models.CharField(max_length=255, blank=True)
     link = models.CharField(max_length=255, blank=True)
 

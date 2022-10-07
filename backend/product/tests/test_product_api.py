@@ -114,7 +114,7 @@ class PrivateProductAPITests(TestCase):
             'name': 'Pikachu Sticker',
             'has_stock': True,
             'current_price': 200,
-            'initial_price': 200
+            'image': "https://image.com"
         }
         # url = detail_url(product.id)
         # res = self.client.patch(url, payload, format='json')
@@ -134,7 +134,7 @@ class PrivateProductAPITests(TestCase):
             'has_stock': True,
             'market': 'mercari',
             'current_price': 200,
-            'initial_price': 150,
+            'image': "https://image.com",
             'detail': 'アメリカでは高値で売れている',
             'link': 'https://ubay.com/time/pikachu'
         }

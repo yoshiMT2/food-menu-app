@@ -7,9 +7,7 @@ import { FORGOT_ENDPOINT } from "../utils/urls";
 function ForgotPasswordPage() {
   const [formEmail, setFormEmail] = useState();
   const [buttonEnabled, setButtonEnabled] = useState();
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState();
-  const [resetSuccess, setResetSuccess] = useState();
 
   useEffect(() => {
     if (formEmail) {
