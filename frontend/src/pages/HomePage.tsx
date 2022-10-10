@@ -4,12 +4,15 @@ import { UseUserDetails } from "../context/UserContext";
 import { Navigate } from "react-router-dom";
 import InputField from "../components/InputField";
 import Button from "../components/Button";
+import Modal from "../components/Modal.tsx";
 import useUrlValidation from "../hooks/useUrlValidation";
 import { productApi } from "../utils/django";
 import ProductList from "../components/ProductLists.tsx";
 
 function HomePage() {
   const [userDetails, setUserDetails] = UseUserDetails();
+  const [selectedRow, setSelectedRow] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const [url, setUrl] = useState("");
   const [isValidUrl] = useUrlValidation(url);
   const token = userDetails.key;
@@ -30,6 +33,28 @@ function HomePage() {
       },
     }
   );
+
+  const getSelectedRow = (rowSelection) =>{
+    setSelectedRow(rowSelection)
+  }
+  console.log(selectedRow)
+
+  function onDeleteClickHandler(e) {
+    e.preventDefault()
+    setShowModal(true)
+  }
+
+  function onConfirm(e) {
+    e.preventDefault()
+    setShowModal(false)
+    console.log(`${Object.keys(selectedRow).join(', ')}削除した`)
+  }
+  
+  function onCancel(e) {
+    e.preventDefault()
+    setShowModal(false)
+    console.log(`${selectedRow}キャンセル`)
+  }
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -63,10 +88,31 @@ function HomePage() {
           <Button className="w-20 mx-3 py-1 text-sm" title="登録" />
         </div>
       </form>
+      {Object.keys(selectedRow).length > 0 ? (
+				<div className="pl-2 sm:pl-10 lg:pl-14">
+					<Button
+						className="mx-1 px-3 md: bg-red-600 hover:bg-red-500 py-1 text-xs"
+						title="削除"
+						onClick={onDeleteClickHandler}
+					/>
+				</div>
+			) : null}
       {isLoading
         ? <p>Loading</p>
-        : <ProductList data={data}/>
+        : <ProductList data={data} getSelectedRow={getSelectedRow}/>
       }
+      {showModal ? (
+				<>
+					<Modal
+						title='アイテムの削除'
+						msg='選択したアイテムを本当に削除しますか？'
+						confirmBtn='削除する'
+						cancelBtn='キャンセル'
+            onConfirm={onConfirm}
+            onCancel={onCancel}
+					/>
+				</>
+			) : null}
     </div>
   );
 }

@@ -1,9 +1,14 @@
 """
 Views for product.
 """
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
+from rest_framework.views import APIView
 from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
+from rest_framework.response import Response
+
 
 from core.models import Product
 from product import serializers
@@ -35,3 +40,10 @@ class ProductView(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         """Create product."""
         serializer.save(user=self.request.user)
+
+    def delete(self, request, *args, **kwargs):
+          ids = request.data
+          if ids:
+              queryset = self.queryset.filter(id__in=ids)
+              queryset.delete()
+          return Response( {'msg':f'Success deleting {len(ids)} items.'},status=status.HTTP_204_NO_CONTENT)

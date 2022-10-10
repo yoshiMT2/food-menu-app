@@ -50,6 +50,5 @@ class ModelTets(TestCase):
             url='https://jp.mercari.com/item/0101',
             has_stock=True,
             current_price=1500,
-            initial_price=1000
         )
         self.assertEqual(str(product), product.url)

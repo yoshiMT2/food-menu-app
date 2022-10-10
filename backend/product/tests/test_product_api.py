@@ -2,12 +2,15 @@
 Tests for the product api.
 """
 from functools import partial
+from hashlib import new
+from symbol import parameters
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 from django.forms.models import model_to_dict
 from rest_framework import status
 from rest_framework.test import APIClient
+import json
 
 from core.models import Product
 
@@ -19,7 +22,6 @@ PRODUCTS_URL = reverse('product:product-list')
 def get_url(object):
     new_obj = model_to_dict(object)
     return new_obj['url']
-
 
 def detail_url(product_id):
     return reverse('product:product-detail', args=[product_id])
@@ -129,6 +131,7 @@ class PrivateProductAPITests(TestCase):
         """Test fulll update for a product."""
         product = create_product(user=self.user)
         payload = {
+            'user': self.user,
             'name': 'Pikachu Sticker',
             'url': 'https://jp.mercari/item/sample',
             'has_stock': True,
@@ -162,4 +165,24 @@ class PrivateProductAPITests(TestCase):
         # id = model_to_dict(product3)['id']
         id = product3.id
         self.assertEqual(product.id, id)
+
+    def test_bulk_delete(self):
+      """Delete multiple products at once."""
+
+      product1 = create_product(user=self.user)
+
+      new_user = create_user(
+            email='user5@example.com',
+            password='testpass123'
+      )
+      product2 = create_product(user=new_user)
+      product3 = create_product(user=new_user)
+      payload = [product1.id, product2.id, product3.id]
+      res = self.client.delete(PRODUCTS_URL, data=json.dumps(payload), content_type='application/json')
+      self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+      self.assertEqual(res.data['msg'], 'Success deleting 3 items.')
+      self.assertFalse(Product.objects.filter(user=self.user).exists())
+      self.assertFalse(Product.objects.filter(user=new_user).exists())
+
+
 

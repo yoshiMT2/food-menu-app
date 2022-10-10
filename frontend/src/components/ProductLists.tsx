@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Button from "./Button";
-import Checkbox from "./Checkbox";
+import Checkbox from "./Checkbox.tsx";
 import {
 	createColumnHelper,
 	flexRender,
 	getCoreRowModel,
 	useReactTable,
-	getTable,
+	getFilteredRowModel,
 } from "@tanstack/react-table";
-import IndeterminateCheckbox from "./Checkbox";
+import Dropdown from "./Dropdown.tsx";
 
 type Product = {
 	has_stock: boolean;
@@ -24,16 +24,35 @@ const columnHelper = createColumnHelper<Product>();
 const columns = [
 	columnHelper.display({
 		id: "checkbox",
-    header: (props) => (<Checkbox className="h-4 w-4 accent-indigo-50 cursor-pointer"/>),
-		cell: (props) => (
-			<Checkbox className="h-4 w-4 accent-indigo-50 cursor-pointer" />
+		header: ({ table }) => (
+			<Checkbox
+				{...{
+					checked: table.getIsAllRowsSelected(),
+					indeterminate: table.getIsSomeRowsSelected(),
+					onChange: table.getToggleAllRowsSelectedHandler(),
+				}}
+			/>
+		),
+		cell: ({ row }) => (
+			<Checkbox
+				{...{
+					checked: row.getIsSelected(),
+					indeterminate: row.getIsSomeSelected(),
+					onChange: row.getToggleSelectedHandler(),
+				}}
+			/>
 		),
 	}),
 	columnHelper.accessor("has_stock", {
-		header: () => "在庫",
+		accessorKey: "stock",
+		id: "stock",
+		header: ({ header, table }) => (
+			<Dropdown column={header.column} table={table} />
+		),
 		cell: (info) => (info.getValue() === true ? "" : "無し"),
 	}),
 	columnHelper.accessor("market", {
+		id: "market",
 		header: () => "売場",
 	}),
 	columnHelper.accessor("name", {
@@ -65,18 +84,28 @@ const columns = [
 	}),
 ];
 
-const ProductList: Product[] = ({ data }) => {
+const ProductList: Product[] = ({ data, getSelectedRow }) => {
+	const [rowSelection, setRowSelection] = useState({});
+	// const [globalFilter, setGlobalFilter] = useState('')
+
 	const table = useReactTable({
 		data,
 		columns,
+		state: {
+			rowSelection,
+		},
+		getFilteredRowModel: getFilteredRowModel(),
 		getCoreRowModel: getCoreRowModel(),
+		onRowSelectionChange: setRowSelection,
+		debugTable: true,
 	});
 
+	useEffect(() => {
+    getSelectedRow(rowSelection)
+	}, [rowSelection, setRowSelection]);
+
 	return (
-		<div className="flex flex-col ">
-      <div className="my-3 sticky top-24 max-w-full bg-white" >
-            <Checkbox className="ml-14"/>
-          </div>
+		<div className="flex flex-col my-3">
 			<div className="overflow-x-scroll overflow-y-scroll mx-2 sm:mx-4 lg:mx-6">
 				<div className="pt-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
 					<div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -88,7 +117,7 @@ const ProductList: Product[] = ({ data }) => {
 											<th
 												key={header.id}
 												scope="col"
-												className="px-2 py-1 text-gray-700"
+												className="px-2 py-1 text-sm text-gray-700"
 											>
 												{header.isPlaceholder
 													? null
@@ -121,7 +150,6 @@ const ProductList: Product[] = ({ data }) => {
 						</table>
 					</div>
 				</div>
-
 				<div className="h-4" />
 			</div>
 		</div>
