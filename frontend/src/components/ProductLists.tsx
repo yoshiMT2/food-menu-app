@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Button from "./Button";
 import Checkbox from "./Checkbox.tsx";
 import {
@@ -57,6 +57,7 @@ const columns = [
 	}),
 	columnHelper.accessor("name", {
 		header: () => "商品名",
+    cell: info=> info.getValue().length > 50 ? info.getValue().substring(0,50) : info.getValue()
 	}),
 	columnHelper.accessor("current_price", {
 		header: () => "価格",
@@ -84,8 +85,9 @@ const columns = [
 	}),
 ];
 
-const ProductList: Product[] = ({ data, getSelectedRow }) => {
+const ProductList: Product[] = ({ data, getSelectedRow, isReset }) => {
 	const [rowSelection, setRowSelection] = useState({});
+  const [rowStatus, setRowStatus] = useState(false)
 	// const [globalFilter, setGlobalFilter] = useState('')
 
 	const table = useReactTable({
@@ -101,8 +103,15 @@ const ProductList: Product[] = ({ data, getSelectedRow }) => {
 	});
 
 	useEffect(() => {
-    getSelectedRow(rowSelection)
+    const ids = [...Object.keys(rowSelection).map(k => parseInt(k))]
+    getSelectedRow(ids)
+
 	}, [rowSelection, setRowSelection]);
+
+  useMemo(()=> {
+    setRowStatus(isReset)
+    table.resetRowSelection(rowStatus)
+  },[isReset])
 
 	return (
 		<div className="flex flex-col my-3">

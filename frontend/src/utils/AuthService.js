@@ -1,4 +1,4 @@
-import {userApi} from "./django";
+import {userApi} from "./django.js";
 
 export const login = async (email, password) => {
   const payload = { email, password };

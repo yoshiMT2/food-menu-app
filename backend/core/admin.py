@@ -43,6 +43,8 @@ class UserAdmin(BaseUserAdmin):
         }]
     ]
 
+class ProductAdmin(admin.ModelAdmin):
+    readonly_fields = ('id',)
 
 admin.site.register(models.User, UserAdmin)
-admin.site.register(models.Product)
+admin.site.register(models.Product, ProductAdmin)

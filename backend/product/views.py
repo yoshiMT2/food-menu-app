@@ -8,11 +8,14 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.response import Response
+import logging
+import json
 
 
 from core.models import Product
 from product import serializers
 
+logger = logging.getLogger('development')
 
 # class ProductScraperView(viewsets.ModelViewset):
 #     serializer_class = serializers.ProductDetailSerializer
