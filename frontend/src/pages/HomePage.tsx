@@ -10,7 +10,7 @@ import { productApi, bulkDelete } from "../utils/django.js";
 import ProductList from "../components/ProductLists.tsx";
 
 function HomePage() {
-	const [userDetails, setUserDetails] = UseUserDetails();
+	const [userDetails] = UseUserDetails();
 	const [responseData, setResponseData] = useState();
 	const [selectedRow, setSelectedRow] = useState([]);
 	const [selectedIds, setSelectedIds] = useState([]);
@@ -82,14 +82,10 @@ function HomePage() {
 	};
 
   useEffect(()=>{
-    setIsReset(false)
-  },[showModal])
-
-	useEffect(() => {
-		let array = [];
 		const ids = selectedRow.map((row) => responseData[row]["id"]);
 		setSelectedIds([...ids]);
-	}, [showModal]);
+    setIsReset(false)
+  },[showModal])
 
 	if (!userDetails?.key) {
 		return <Navigate to="/login" />;
@@ -143,3 +139,4 @@ function HomePage() {
 	);
 }
 export default HomePage;
+

@@ -8,7 +8,6 @@ import {
   QueryClientProvider,
 } from "@tanstack/react-query";
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import Footer from "./components/Footer";
 import HomePage from "./pages/HomePage.tsx";
 import LoginPage from "./pages/LoginPage";
 import ForgotPasswordPage from "./pages/ForgotPasswordPage";
@@ -29,10 +28,9 @@ function App() {
               <Route path="/" element={<HomePage />} exact />
               <Route path="/login" element={<LoginPage />} exact />
               <Route path="/forgot" element={<ForgotPasswordPage />} exact />
-              <Route path="/product:id" element={<DetailPage />} exact />
+              <Route path="/product/:id" element={<DetailPage />} exact />
             </Routes>
           </main>
-          <Footer />
         </UserProvider>
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>

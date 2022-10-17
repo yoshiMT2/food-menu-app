@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Button from "./Button";
 import Checkbox from "./Checkbox.tsx";
+import { Link } from 'react-router-dom'
 import {
 	createColumnHelper,
 	flexRender,
@@ -21,74 +22,72 @@ type Product = {
 
 const columnHelper = createColumnHelper<Product>();
 
-const columns = [
-	columnHelper.display({
-		id: "checkbox",
-		header: ({ table }) => (
-			<Checkbox
-				{...{
-					checked: table.getIsAllRowsSelected(),
-					indeterminate: table.getIsSomeRowsSelected(),
-					onChange: table.getToggleAllRowsSelectedHandler(),
-				}}
-			/>
-		),
-		cell: ({ row }) => (
-			<Checkbox
-				{...{
-					checked: row.getIsSelected(),
-					indeterminate: row.getIsSomeSelected(),
-					onChange: row.getToggleSelectedHandler(),
-				}}
-			/>
-		),
-	}),
-	columnHelper.accessor("has_stock", {
-		accessorKey: "stock",
-		id: "stock",
-		header: ({ header, table }) => (
-			<Dropdown column={header.column} table={table} />
-		),
-		cell: (info) => (info.getValue() === true ? "" : "無し"),
-	}),
-	columnHelper.accessor("market", {
-		id: "market",
-		header: () => "売場",
-	}),
-	columnHelper.accessor("name", {
-		header: () => "商品名",
-    cell: info=> info.getValue().length > 50 ? info.getValue().substring(0,50) : info.getValue()
-	}),
-	columnHelper.accessor("current_price", {
-		header: () => "価格",
-	}),
-	columnHelper.accessor("url", {
-		header: () => "リンク",
-		cell: (props) => (
-			<a
-				href={props.getValue()}
-				target="_blank"
-				className="text-xs font-semibold text-blue-600 hover:underline"
-			>
-				商品ページ
-			</a>
-		),
-	}),
-	columnHelper.display({
-		id: "action",
-		cell: (props) => (
-			<Button
-				className="mx-1 px-2 bg-orange-500  hover:bg-orange-400 py-1 text-xs"
-				title="詳細"
-			/>
-		),
-	}),
-];
-
 const ProductList: Product[] = ({ data, getSelectedRow, isReset }) => {
+
 	const [rowSelection, setRowSelection] = useState({});
   const [rowStatus, setRowStatus] = useState(false)
-	// const [globalFilter, setGlobalFilter] = useState('')
+
+  const columns = [
+    columnHelper.display({
+      id: "checkbox",
+      header: ({ table }) => (
+        <Checkbox
+          {...{
+            checked: table.getIsAllRowsSelected(),
+            indeterminate: table.getIsSomeRowsSelected(),
+            onChange: table.getToggleAllRowsSelectedHandler(),
+          }}
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          {...{
+            checked: row.getIsSelected(),
+            indeterminate: row.getIsSomeSelected(),
+            onChange: row.getToggleSelectedHandler(),
+          }}
+        />
+
+      ),
+    }),
+    columnHelper.accessor("has_stock", {
+      accessorKey: "stock",
+      id: "stock",
+      header: ({ header, table }) => (
+        <Dropdown column={header.column} table={table} />
+      ),
+      cell: (info) => (info.getValue() === true ? "" : "無し"),
+    }),
+    columnHelper.accessor("market", {
+      id: "market",
+      header: () => "売場",
+    }),
+    columnHelper.accessor("name", {
+      header: () => "商品名",
+      cell: info=> info.getValue().length > 50 ? info.getValue().substring(0,50) : info.getValue()
+    }),
+    columnHelper.accessor("current_price", {
+      header: () => "価格",
+    }),
+    columnHelper.accessor("url", {
+      header: () => "リンク",
+      cell: info => (
+        <a
+          href={info.getValue()}
+          target="_blank"
+          className="text-xs font-semibold text-blue-600 hover:underline"
+        >
+          商品ページ
+        </a>
+      ),
+    }),
+    columnHelper.accessor("detail_page", {
+      header: "",
+      cell: info => (
+        <Link to={`/product/${data[info.row.id]['id']}`}>🔎</Link>
+      )
+    }),
+  ];
 
 	const table = useReactTable({
 		data,
@@ -105,12 +104,11 @@ const ProductList: Product[] = ({ data, getSelectedRow, isReset }) => {
 	useEffect(() => {
     const ids = [...Object.keys(rowSelection).map(k => parseInt(k))]
     getSelectedRow(ids)
+	}, [rowSelection]);
 
-	}, [rowSelection, setRowSelection]);
-
-  useMemo(()=> {
-    setRowStatus(isReset)
-    table.resetRowSelection(rowStatus)
+  useEffect(()=> {
+    setRowStatus(false)
+    console.log('Module')
   },[isReset])
 
 	return (

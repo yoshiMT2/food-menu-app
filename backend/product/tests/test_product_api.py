@@ -106,6 +106,7 @@ class PrivateProductAPITests(TestCase):
         url = detail_url(product.id)
         res = self.client.get(url)
         serializer = ProductDetailSerializer(product)
+        # self.assertEqual(url, "status.HTTP_200_OK")
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
@@ -118,8 +119,8 @@ class PrivateProductAPITests(TestCase):
             'current_price': 200,
             'image': "https://image.com"
         }
-        # url = detail_url(product.id)
-        # res = self.client.patch(url, payload, format='json')
+        url = detail_url(product.id)
+        res = self.client.patch(url, payload, format='json')
         serializer = ProductSerializer()
         serializer.update(product, payload)
         product.refresh_from_db()

@@ -2,7 +2,7 @@ import React, { HTMLAttributes, HTMLProps, useRef, useEffect} from 'react'
 
 function Checkbox ({
   indeterminate,
-  className = '',
+  className = 'text-white',
   ...rest
 }: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
   const ref = useRef<HTMLInputElement>(null!)

@@ -1,5 +1,4 @@
 import React from 'react';
-import { twMerge } from "tailwind-merge";
 
 function InputField (props) {
     const className = `px-3 py-2 rounded-md border border-slate-400 focus:border-indigo-400 focus:border-2 focus:outline-none st ${props.className || ''}`

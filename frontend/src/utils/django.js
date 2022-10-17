@@ -34,3 +34,15 @@ export const bulkDelete = async (token, ids) => {
   });
   return resp
 };
+
+export const detailApi = async (token, id) => {
+  const {data} = await fetch(`http://localhost:3000/api/product/products/${id}`, {
+    method: 'GET',
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": csrftoken,
+      "authorization": `Token ${token}`
+    }
+  });
+  return data
+};
