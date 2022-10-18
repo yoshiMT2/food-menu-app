@@ -62,6 +62,6 @@ class Product(models.Model):
     image = models.CharField(max_length=255, blank=True)
     detail = models.CharField(max_length=255, blank=True)
     link = models.CharField(max_length=255, blank=True)
-
+    updated_at = models.DateTimeField(auto_now=True, blank=True)
     def __str__(self):
         return self.url

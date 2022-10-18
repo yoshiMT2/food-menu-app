@@ -69,6 +69,13 @@ const ProductList: Product[] = ({ data, getSelectedRow, isReset }) => {
     columnHelper.accessor("current_price", {
       header: () => "価格",
     }),
+    columnHelper.accessor("updated_at", {
+      header: () => "更新日時",
+      cell: info => new Date(info.getValue()).toLocaleString(undefined, {
+        month: "numeric", day: "numeric",
+        hour: "numeric", minute: "numeric", second: "numeric"
+    })
+    }),
     columnHelper.accessor("url", {
       header: () => "リンク",
       cell: info => (
@@ -108,7 +115,6 @@ const ProductList: Product[] = ({ data, getSelectedRow, isReset }) => {
 
   useEffect(()=> {
     setRowStatus(false)
-    console.log('Module')
   },[isReset])
 
 	return (
