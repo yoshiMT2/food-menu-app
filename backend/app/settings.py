@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure--9c02vf+$%c2it!ehzr)gm*t(1bv5t5s4=enpm8%7_x3s74f(m'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
     'api'
@@ -87,10 +87,11 @@ WSGI_APPLICATION = 'app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'HOST': os.environ.get('DB_HOST'),
-        'NAME': os.environ.get('DB_NAME'),
-        'USER': os.environ.get('DB_USER'),
-        'PASSWORD':os.environ.get('DB_PASS')
+        'NAME': 'railway',
+        'USER': 'postgres',
+        'PASSWORD': 'gbDzcpcl7ImvBbEb0uwf',
+        'HOST': 'containers-us-west-57.railway.app',
+        'PORT': '5828',
     }
 }
 
@@ -149,15 +150,15 @@ SPECTACULAR_SETTINGS = {
 }
 
 CORS_ORIGIN_ALLOWED = (
-    "https://flimapp.up.railway.app/",
+    "https://flimapp.up.railway.app",
 )
 
 CORS_ALLOWED_ORIGINS = (
-    'https://flimapp.up.railway.app/'
+    'https://flimapp.up.railway.app'
 )
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://flimapp.up.railway.app/'
+    'https://flimapp.up.railway.app'
 ]
 
 WEB_SITE_NAME='Flimapp'
@@ -167,6 +168,6 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = '587'
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = ''
-SENDER_EMAIL = 'yosshit47@gmail.com'
-EMAIL_HOST_PASSWORD = 'perfectme105286268'
-EMAIL_USE_TLS = 'perfectme105286268'
+SENDER_EMAIL = 'admin@example.com'
+EMAIL_HOST_PASSWORD = 'testpass'
+EMAIL_USE_TLS = 'testpass'
