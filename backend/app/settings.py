@@ -89,7 +89,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER': 'postgres',
-        'PASSWORD': 'gbDzcpcl7ImvBbEb0uwf',
+        'PASSWORD': 'DhCDbRmzcIz4JneOq9lc',
         'HOST': 'containers-us-west-57.railway.app',
         'PORT': '5828',
     }
@@ -151,10 +151,16 @@ SPECTACULAR_SETTINGS = {
 
 CORS_ORIGIN_ALLOWED = (
     "https://flimapp.up.railway.app",
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://localhost:8080',
 )
 
 CORS_ALLOWED_ORIGINS = (
     'https://flimapp.up.railway.app'
+    'http://localhost:3000',
+    'http://localhost:8000',
+    'http://localhost:8080',
 )
 
 CSRF_TRUSTED_ORIGINS = [
