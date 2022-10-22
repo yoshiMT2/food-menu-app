@@ -1,5 +1,6 @@
 import axios from "axios";
 import { getCookie } from "./cookies";
+import { BACKEND_URL } from "./urls";
 
 const csrftoken = getCookie("csrftoken");
 
@@ -23,7 +24,7 @@ export const productApi = (token) => {
 };
 
 export const bulkDelete = async (token, ids) => {
-  const resp = await fetch("api/product/products/", {
+  const resp = await fetch(BACKEND_URL + "api/product/products/", {
     method: 'DELETE',
     headers: {
       "Content-Type": "application/json",
@@ -36,7 +37,7 @@ export const bulkDelete = async (token, ids) => {
 };
 
 export const detailApi = async (token, id) => {
-  const {data} = await fetch(`http://localhost:3000/api/product/products/${id}`, {
+  const {data} = await fetch(BACKEND_URL + `api/product/products/${id}/`, {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",

@@ -8,6 +8,7 @@ import Modal from "../components/Modal.tsx";
 import useUrlValidation from "../hooks/useUrlValidation";
 import { productApi, bulkDelete } from "../utils/django.js";
 import ProductList from "../components/ProductLists.tsx";
+import { BACKEND_URL } from '../utils/urls.js';
 
 function HomePage() {
 	const [userDetails] = UseUserDetails();
@@ -26,7 +27,7 @@ function HomePage() {
 	const { isLoading, isError, data, error } = useQuery(
 		["products"],
 		async () => {
-			const res = await api.get("api/product/products/");
+			const res = await api.get(BACKEND_URL + "api/product/products/");
 			setResponseData(res.data);
 			return res.data;
 		}
@@ -34,7 +35,7 @@ function HomePage() {
 
 	const {mutate: createProduct }= useMutation(
 		async () => {
-			return await api.post("api/product/products/", { url });
+			return await api.post(BACKEND_URL + "api/product/products/", { url });
 		},
 		{
 			onSuccess: () => {

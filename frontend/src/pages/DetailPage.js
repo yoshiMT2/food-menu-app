@@ -5,6 +5,7 @@ import { productApi } from "../utils/django.js";
 import { UseUserDetails } from "../context/UserContext";
 import InputField from '../components/InputField.jsx';
 import Button from '../components/Button.jsx';
+import { BACKEND_URL } from '../utils/urls.js';
 
 
 const DetailPage = () => {
@@ -18,7 +19,7 @@ const DetailPage = () => {
 
   const { mutate: editDetail } = useMutation(
     async (payload) => {
-      return await api.patch(`http://localhost:3000/api/product/products/${id}/`, payload);
+      return await api.patch(BACKEND_URL + `api/product/products/${id}/`, payload);
     },
     {
       onSuccess: () => {
@@ -55,7 +56,7 @@ const DetailPage = () => {
   const { isLoading, isError, data, error } = useQuery(
     ["product"],
     async () => {
-      const { data } = await api.get(`http://localhost:3000/api/product/products/${id}`);
+      const { data } = await api.get(BACKEND_URL + `api/product/products/${id}/`);
       console.log(data)
       return data
     }

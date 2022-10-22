@@ -25,7 +25,7 @@ class CreateUserView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
 # @method_decorator(csrf_exempt, name='dispatch')
-class CreateToeknView(ObtainAuthToken):
+class CreateTokenView(ObtainAuthToken):
     """Create a new auth token for user."""
     serializer_class = AuthTokenSerializer
     render_classes = api_settings.DEFAULT_RENDERER_CLASSES
