@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure--9c02vf+$%c2it!ehzr)gm*t(1bv5t5s4=enpm8%7_x3s74f(m
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'api'
+    'flimap-api.up.railway.app'
 ]
 
 
