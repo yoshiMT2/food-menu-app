@@ -149,19 +149,19 @@ SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True
 }
 
-CORS_ORIGIN_ALLOWED = (
+CORS_ORIGIN_ALLOWED = [
     "https://flimapp.up.railway.app",
     'http://localhost:3000',
     'http://localhost:8000',
     'http://localhost:8080',
-)
+]
 
-CORS_ALLOWED_ORIGINS = (
-    'https://flimapp.up.railway.app'
+CORS_ALLOWED_ORIGINS = [
+    'https://flimapp.up.railway.app',
     'http://localhost:3000',
     'http://localhost:8000',
     'http://localhost:8080',
-)
+]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://flimapp.up.railway.app'
