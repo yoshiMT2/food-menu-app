@@ -151,17 +151,17 @@ SPECTACULAR_SETTINGS = {
 
 CORS_ORIGIN_ALLOWED = [
     "https://flimapp.up.railway.app",
-    'https://flimap-api.up.railway.app/',
+    'https://flimap-api.up.railway.app',
 ]
 
 CORS_ALLOWED_ORIGINS = [
     'https://flimapp.up.railway.app',
-    'https://flimap-api.up.railway.app/',
+    'https://flimap-api.up.railway.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'https://flimapp.up.railway.app',
-    'https://flimap-api.up.railway.app/',
+    'https://flimap-api.up.railway.app',
 ]
 
 WEB_SITE_NAME='Flimapp'
