@@ -57,7 +57,6 @@ const DetailPage = () => {
     ["product"],
     async () => {
       const { data } = await api.get(BACKEND_URL + `api/product/products/${id}/`);
-      console.log(data)
       return data
     }
   );

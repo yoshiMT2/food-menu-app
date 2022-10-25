@@ -105,7 +105,6 @@ const ProductList: Product[] = ({ data, getSelectedRow, isReset }) => {
 		getFilteredRowModel: getFilteredRowModel(),
 		getCoreRowModel: getCoreRowModel(),
 		onRowSelectionChange: setRowSelection,
-		debugTable: true,
 	});
 
 	useEffect(() => {
