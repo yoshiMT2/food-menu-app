@@ -21,7 +21,6 @@ export function UserProvider({ children }) {
     }
     return [{ ...userDetails }, updateuserDetails];
   }, [userDetails]);
-  console.log("userDetailscontext", userDetails.key);
   return (
     <UserContext.Provider value={value}>
       {children}

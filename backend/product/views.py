@@ -8,6 +8,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.response import Response
+# from django.db import transaction
 import logging
 import json
 
@@ -36,7 +37,7 @@ class ProductView(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         """Get detail for product."""
-        if self.action == 'list':
+        if self.action == 'list' or 'put':
             return serializers.ProductSerializer
         return self.serializer_class
 
@@ -45,8 +46,15 @@ class ProductView(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
     def delete(self, request, *args, **kwargs):
-          ids = request.data
-          if ids:
-              queryset = self.queryset.filter(id__in=ids)
-              queryset.delete()
-          return Response( {'msg':f'Success deleting {len(ids)} items.'},status=status.HTTP_204_NO_CONTENT)
+        ids = request.data
+        if ids:
+            queryset = self.queryset.filter(id__in=ids)
+            queryset.delete()
+        return Response( {'msg':f'Success deleting {len(ids)} items.'},status=status.HTTP_204_NO_CONTENT)
+
+    # def put(self, request, *args, **kwargs):
+
+    #     with transaction.atomic():
+    #         for key, value in request.data.items():
+    #             Product.objects.filter(id=key).update(name=value)
+    #     return Response( {'msg':f'Success updating {len(request.data)} items.'},status=status.HTTP_200_OK)

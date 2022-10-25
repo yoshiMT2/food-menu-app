@@ -1,9 +1,6 @@
 """
 Tests for the product api.
 """
-from functools import partial
-from hashlib import new
-from symbol import parameters
 from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
@@ -169,9 +166,7 @@ class PrivateProductAPITests(TestCase):
 
     def test_bulk_delete(self):
       """Delete multiple products at once."""
-
       product1 = create_product(user=self.user)
-
       new_user = create_user(
             email='user5@example.com',
             password='testpass123'
@@ -184,6 +179,8 @@ class PrivateProductAPITests(TestCase):
       # self.assertEqual(res.data['msg'], 'Success deleting 3 items.')
       self.assertFalse(Product.objects.filter(user=self.user).exists())
       self.assertFalse(Product.objects.filter(user=new_user).exists())
+
+
 
 
 
