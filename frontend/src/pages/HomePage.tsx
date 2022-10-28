@@ -107,7 +107,11 @@ function HomePage() {
 					/>
 				</div>
 				<div className="col-span-1 flex justify-center">
-					<Button className="w-20 mx-3 py-1 text-sm" title="登録" />
+					<Button
+            className="w-20 mx-3 py-1 text-sm"
+            title="登録"
+            disabled={responseData?.length > 15}
+          />
 				</div>
 			</form>
 			{Object.keys(selectedRow).length > 0 ? (
