@@ -118,7 +118,7 @@ const ProductList: Product[] = ({ data, getSelectedRow, isReset }) => {
 
 	return (
 		<div className="flex flex-col my-3">
-			<div className="overflow-x-scroll overflow-y-scroll mx-2 sm:mx-4 lg:mx-6">
+			<div className="mx-2 sm:mx-4 lg:mx-6">
 				<div className="pt-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
 					<div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
 						<table className="min-w-full divide-y divide-gray-200">
