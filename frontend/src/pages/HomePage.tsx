@@ -110,7 +110,7 @@ function HomePage() {
 					<Button
             className="w-20 mx-3 py-1 text-sm"
             title="登録"
-            disabled={responseData?.length > 15}
+            disabled={responseData?.length > 300}
           />
 				</div>
 			</form>
