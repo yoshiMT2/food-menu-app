@@ -94,7 +94,7 @@ function HomePage() {
 	return (
 		<div className="flex flex-col">
 			<form
-				className="px-10 py-1 grid md:grid-cols-8 grid-cols-5 bg-white drop-shadow-sm space-y-3 sticky top-10"
+				className="px-10 py-1 grid md:grid-cols-9 grid-cols-6 bg-white drop-shadow-sm space-y-3 sticky top-10"
 				onSubmit={submitHandler}
 			>
 				<div className="my-2 ml-6 md:col-span-7 col-span-4">
@@ -113,6 +113,7 @@ function HomePage() {
             disabled={responseData?.length > 300}
           />
 				</div>
+        <div className="col-span-1 pt-1">登録数: {data.length}</div>
 			</form>
 			{Object.keys(selectedRow).length > 0 ? (
 				<div className="pl-2 sm:pl-10 lg:pl-14">

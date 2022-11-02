@@ -26,7 +26,7 @@ class ProductView(viewsets.ModelViewSet):
     def get_queryset(self):
         """Retrieve products for authenticated user"""
         if self.request.user.is_staff == True:
-            return self.queryset.order_by('-url')
+            return self.queryset.order_by('id')
         else:
             return self.queryset.filter(user=self.request.user).order_by('-id')
 
@@ -46,10 +46,3 @@ class ProductView(viewsets.ModelViewSet):
             queryset = self.queryset.filter(id__in=ids)
             queryset.delete()
         return Response( {'msg':f'Success deleting {len(ids)} items.'},status=status.HTTP_204_NO_CONTENT)
-
-    # def put(self, request, *args, **kwargs):
-
-    #     with transaction.atomic():
-    #         for key, value in request.data.items():
-    #             Product.objects.filter(id=key).update(name=value)
-    #     return Response( {'msg':f'Success updating {len(request.data)} items.'},status=status.HTTP_200_OK)
