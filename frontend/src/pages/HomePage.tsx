@@ -113,7 +113,7 @@ function HomePage() {
             disabled={responseData?.length > 300}
           />
 				</div>
-        <div className="col-span-1 pt-1">登録数: {data.length}</div>
+        <div className="col-span-1 pt-1">登録数: {data?.length}</div>
 			</form>
 			{Object.keys(selectedRow).length > 0 ? (
 				<div className="pl-2 sm:pl-10 lg:pl-14">
