@@ -8,9 +8,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from rest_framework.response import Response
-# from django.db import transaction
 import logging
-import json
 
 
 from core.models import Product
@@ -18,9 +16,6 @@ from product import serializers
 
 logger = logging.getLogger('development')
 
-# class ProductScraperView(viewsets.ModelViewset):
-#     serializer_class = serializers.ProductDetailSerializer
-#     queryset = Product.objects.all()
 
 class ProductView(viewsets.ModelViewSet):
     serializer_class = serializers.ProductDetailSerializer
@@ -37,7 +32,7 @@ class ProductView(viewsets.ModelViewSet):
 
     def get_serializer_class(self):
         """Get detail for product."""
-        if self.action == 'list' or 'put':
+        if self.action == 'list':
             return serializers.ProductSerializer
         return self.serializer_class
 
