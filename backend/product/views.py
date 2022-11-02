@@ -26,9 +26,9 @@ class ProductView(viewsets.ModelViewSet):
     def get_queryset(self):
         """Retrieve products for authenticated user"""
         if self.request.user.is_staff == True:
-            return self.queryset.order_by('id')
+            return self.queryset.order_by('-url')
         else:
-            return self.queryset.filter(user=self.request.user).order_by('-id')
+            return self.queryset.filter(user=self.request.user).order_by('id')
 
     def get_serializer_class(self):
         """Get detail for product."""
