@@ -50,9 +50,14 @@ const ProductList: Product[] = ({ data, getSelectedRow, isReset }) => {
 
       ),
     }),
-    columnHelper.accessor("id", {
-      header: () => "ID",
-      cell: (info) => info.getValue()
+    columnHelper.display({
+      id: "index",
+      header: "No.",
+      cell: ({row}) => (
+        <p>
+          {row.index + 1}
+        </p>
+      )
     }),
     columnHelper.accessor("has_stock", {
       accessorKey: "stock",
