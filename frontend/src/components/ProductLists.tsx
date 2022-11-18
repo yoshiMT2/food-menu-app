@@ -1,4 +1,8 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
+import { productApi } from "../utils/django.js";
+import { UseUserDetails } from "../context/UserContext";
+import Modal from "./Modal.tsx"
 import Button from "./Button";
 import Checkbox from "./Checkbox.tsx";
 import { Link } from 'react-router-dom'
@@ -24,8 +28,41 @@ const columnHelper = createColumnHelper<Product>();
 
 const ProductList: Product[] = ({ data, getSelectedRow, isReset }) => {
 
-	const [rowSelection, setRowSelection] = useState({});
+  const [rowSelection, setRowSelection] = useState({});
   const [rowStatus, setRowStatus] = useState(false)
+  const [showModal, setShowModal] = useState(false);
+  const [userDetails] = UseUserDetails();
+  const [rowId, setRowId] = useState()
+  const queryClient = useQueryClient();
+  const TOKEN = userDetails.key;
+  const api = productApi(TOKEN)
+
+  const { mutate: updateStock } = useMutation(
+    async (id) => {
+        return await api.patch(`api/product/products/${id}/`, { 'has_stock':true });
+    },
+    {
+        onSuccess: () => {
+            queryClient.invalidateQueries(["products"]);
+        },
+    },
+  );
+
+  const handleClick = (rowId) => {
+    setRowId(rowId)
+    setShowModal(true)
+
+  }
+  async function onConfirm(e) {
+		e.preventDefault();
+		await updateStock(rowId);
+		setShowModal(false);
+	}
+
+	function onCancel(e) {
+		e.preventDefault();
+		setShowModal(false);
+	}
 
   const columns = [
     columnHelper.display({
@@ -65,7 +102,10 @@ const ProductList: Product[] = ({ data, getSelectedRow, isReset }) => {
       header: ({ header, table }) => (
         <Dropdown column={header.column} table={table} />
       ),
-      cell: (info) => (info.getValue() === true ? "" : "無し"),
+      cell: (info) => (info.getValue() ?  ''
+                      : <Button className="px-1 py-0 bg-white text-black hover:bg-gray-100 hover:underline"
+                                title="無し"
+                                onClick={() => handleClick(data[info.row.id]['id'])}/>),
     }),
     columnHelper.accessor("market", {
       id: "market",
@@ -173,6 +213,18 @@ const ProductList: Product[] = ({ data, getSelectedRow, isReset }) => {
 				</div>
 				<div className="h-4" />
 			</div>
+      {showModal ? (
+				<>
+					<Modal
+						title="在庫状況の変更"
+						msg="在庫状況を「在庫あり」に戻しますか？"
+						confirmBtn="はい"
+						cancelBtn="キャンセル"
+						onConfirm={onConfirm}
+						onCancel={onCancel}
+					/>
+				</>
+			) : null}
 		</div>
 	);
 };
