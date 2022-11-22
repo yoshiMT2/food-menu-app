@@ -6,6 +6,7 @@ import Modal from "./Modal.tsx"
 import Button from "./Button";
 import Checkbox from "./Checkbox.tsx";
 import { Link } from 'react-router-dom'
+import { BACKEND_URL } from '../utils/urls.js';
 import {
 	createColumnHelper,
 	flexRender,
@@ -39,7 +40,7 @@ const ProductList: Product[] = ({ data, getSelectedRow, isReset }) => {
 
   const { mutate: updateStock } = useMutation(
     async (id) => {
-        return await api.patch(`api/product/products/${id}/`, { 'has_stock':true });
+        return await api.patch(BACKEND_URL + `api/product/products/${id}/`, { 'has_stock':true });
     },
     {
         onSuccess: () => {
